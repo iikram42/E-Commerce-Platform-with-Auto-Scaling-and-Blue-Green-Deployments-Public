@@ -1,4 +1,3 @@
-# E-Commerce Platform with Auto Scaling and Blue-Green Deployments
 # E-Commerce Platform with Blue-Green Deployments
 
 ## Overview
