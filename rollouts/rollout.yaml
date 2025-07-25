@@ -1,0 +1,32 @@
+# Argo Rollout config for Blue-Green deployment
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: ecommerce-backend
+  labels:
+    app: ecommerce-backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: ecommerce-backend
+  template:
+    metadata:
+      labels:
+        app: ecommerce-backend
+    spec:
+      containers:
+        - name: backend
+          image: ghcr.io/your-username/ecommerce-backend:latest
+          ports:
+            - containerPort: 3001
+  strategy:
+    blueGreen:
+      activeService: ecommerce-backend
+      previewService: ecommerce-backend-preview
+      autoPromotionEnabled: false
+      autoPromotionSeconds: 30
+      prePromotionAnalysis:
+        templates:
+          - templateName: success-rate-check
+      abortScaleDownDelaySeconds: 30

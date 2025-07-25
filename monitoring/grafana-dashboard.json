@@ -1,0 +1,52 @@
+// Grafana dashboard for monitoring app
+{
+  "dashboard": {
+    "id": null,
+    "title": "E-Commerce Monitoring",
+    "tags": ["ecommerce"],
+    "timezone": "browser",
+    "schemaVersion": 30,
+    "version": 1,
+    "panels": [
+      {
+        "type": "graph",
+        "title": "Backend Response Time",
+        "targets": [
+          {
+            "expr": "rate(http_request_duration_seconds_sum{app=\"ecommerce-backend\"}[1m]) / rate(http_request_duration_seconds_count{app=\"ecommerce-backend\"}[1m])",
+            "legendFormat": "Response Time",
+            "interval": ""
+          }
+        ],
+        "datasource": "Prometheus",
+        "gridPos": { "x": 0, "y": 0, "w": 12, "h": 8 }
+      },
+      {
+        "type": "graph",
+        "title": "Frontend Error Rate",
+        "targets": [
+          {
+            "expr": "rate(http_requests_total{app=\"ecommerce-frontend\",status=~\"5..\"}[1m])",
+            "legendFormat": "5xx Errors",
+            "interval": ""
+          }
+        ],
+        "datasource": "Prometheus",
+        "gridPos": { "x": 12, "y": 0, "w": 12, "h": 8 }
+      },
+      {
+        "type": "stat",
+        "title": "Checkout Conversion Rate",
+        "targets": [
+          {
+            "expr": "sum(rate(checkout_success_total[5m])) / sum(rate(cart_add_total[5m]))",
+            "legendFormat": "Conversion Rate",
+            "interval": ""
+          }
+        ],
+        "datasource": "Prometheus",
+        "gridPos": { "x": 0, "y": 8, "w": 24, "h": 5 }
+      }
+    ]
+  }
+}

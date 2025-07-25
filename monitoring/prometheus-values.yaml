@@ -1,0 +1,28 @@
+# Prometheus Helm values
+# Custom values for Prometheus Helm chart
+alertmanager:
+  enabled: true
+
+server:
+  enabled: true
+  resources:
+    limits:
+      memory: 512Mi
+      cpu: 500m
+  persistentVolume:
+    enabled: false
+  service:
+    type: ClusterIP
+  global:
+    scrape_interval: 15s
+
+pushgateway:
+  enabled: false
+
+extraScrapeConfigs:
+  - job_name: 'ecommerce-backend'
+    static_configs:
+      - targets: ['ecommerce-backend:3001']
+  - job_name: 'ecommerce-frontend'
+    static_configs:
+      - targets: ['ecommerce-frontend:80']

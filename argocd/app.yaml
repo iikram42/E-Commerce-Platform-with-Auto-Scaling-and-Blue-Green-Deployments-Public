@@ -1,0 +1,24 @@
+# ArgoCD app definition for GitOps
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: ecommerce-platform
+  namespace: argocd
+spec:
+  project: default
+
+  source:
+    repoURL: https://github.com/your-username/ecommerce-bluegreen
+    targetRevision: HEAD
+    path: k8s-manifests
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: ecommerce
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
